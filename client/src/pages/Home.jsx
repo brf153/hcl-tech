@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import mainPic from '../assets/main.jpg';
 import { Box, AppBar, Toolbar, Typography, Button } from '@mui/material';
 import logo from "../assets/logo.png";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../store/slice/userSlice";
 
 function Home() {
+  const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch(logout())
+    navigate('/login');
+  }
+  useEffect(()=>{
+    if (!user.token) {
+      navigate('/login');
+    }
+  },[])
   return (
 <Box sx={{ width: '100vw', height: '100vh', position: 'relative' }}>
   {/* Background Image with Overlay */}
@@ -51,7 +66,7 @@ function Home() {
           View Reports
         </Button>
       </Box>
-      <Button sx={{ color: 'white' }}>Logout</Button>
+      <Button onClick={handleLogout} sx={{ color: 'white' }}>Logout</Button>
     </Toolbar>
   </Box>
 
@@ -64,7 +79,7 @@ function Home() {
         marginTop: '20vh',
       }}
     >
-      Welcome to the Dashboard
+      Welcome {user?.userData?.fullName}
     </Typography>
     <Typography variant='subtitle1' sx={{ color: 'white', textAlign: 'center' }}>
       Manage your schedule and view reports

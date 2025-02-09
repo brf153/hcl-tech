@@ -1,14 +1,55 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Button, Container, Typography, Paper, Tab, Tabs, MenuItem } from "@mui/material";
 import { useForm } from "react-hook-form";
+import axiosInstance from "../api/axios";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../store/slice/userSlice";
+import {useNavigate} from "react-router-dom";
 
 const AuthForm = () => {
   const [tab, setTab] = useState(0);
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log("Form Data:", data);
+    
+    try {
+      let response;
+      
+      if (tab === 0) {
+
+        response = await axiosInstance.post("/participants/login", data);
+
+        if (response.status === 200) {
+          console.log("Login Successful", response.data);
+          dispatch(login({ userData: response.data.participant, token: response.data.token }));
+          navigate("/");
+        }
+      } else if (tab === 1) {
+        response = await axiosInstance.post("/participants/register", data);
+        if (response.status === 201) {
+          setTab(0);
+        }
+      }
+  
+      console.log("API Response:", response.data);
+    } catch (error) {
+
+        console.error("Unexpected Error:", error);
+      
+    }
   };
+
+  useEffect(() => {
+    if (user.token) {
+      navigate("/");
+    }
+  }
+  , []);
+  
 
   return (
     <Container maxWidth="sm">
@@ -29,8 +70,10 @@ const AuthForm = () => {
           {tab === 1 && (
             <>
               <Typography variant="h6">Personal Information</Typography>
-              <TextField fullWidth label="Full Name" {...register("name", { required: "Full Name is required" })} error={!!errors.name} helperText={errors.name?.message} margin="normal" />
-              <TextField fullWidth label="Date of Birth" type="date" InputLabelProps={{ shrink: true }} {...register("dob", { required: "DOB is required" })} error={!!errors.dob} helperText={errors.dob?.message} margin="normal" />
+              <TextField fullWidth label="Full Name" {...register("fullName", { required: "Full Name is required" })} error={!!errors.name} helperText={errors.name?.message} margin="normal" />
+              <TextField fullWidth label="Email" {...register("email", { required: "Email is required" })} error={!!errors.email} helperText={errors.email?.message} margin="normal" />
+              <TextField fullWidth label="Password" {...register("password", { required: "Password is required" })} error={!!errors.password} helperText={errors.password?.message} margin="normal" />
+              <TextField fullWidth label="Date of Birth" type="date" InputLabelProps={{ shrink: true }} {...register("dateOfBirth", { required: "DOB is required" })} error={!!errors.dob} helperText={errors.dob?.message} margin="normal" />
               <TextField select fullWidth label="Gender" {...register("gender", { required: "Gender is required" })} error={!!errors.gender} helperText={errors.gender?.message} margin="normal">
                 <MenuItem value="Male">Male</MenuItem>
                 <MenuItem value="Female">Female</MenuItem>
@@ -46,7 +89,7 @@ const AuthForm = () => {
 
               <Typography variant="h6">Contact Information</Typography>
               <TextField fullWidth label="Address" {...register("address", { required: "Address is required" })} error={!!errors.address} helperText={errors.address?.message} margin="normal" />
-              <TextField fullWidth label="Phone Number" {...register("phone", { required: "Phone Number is required" })} error={!!errors.phone} helperText={errors.phone?.message} margin="normal" />
+              <TextField fullWidth label="Phone Number" {...register("phoneNumber", { required: "Phone Number is required" })} error={!!errors.phone} helperText={errors.phone?.message} margin="normal" />
 
               <Typography variant="h6">Socioeconomic Data</Typography>
               <TextField select fullWidth label="Employment Status" {...register("employmentStatus", { required: "Employment Status is required" })} error={!!errors.employmentStatus} helperText={errors.employmentStatus?.message} margin="normal">

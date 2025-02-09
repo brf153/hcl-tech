@@ -4,8 +4,8 @@ const participantSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, enum: ["Participant", "Admin"], required: true },
-  dateOfBirth: { type: Date, required: true },
+  role: { type: String, enum: ["Participant", "Admin"], default: "Participant" },
+  dateOfBirth: { type: String, required: true },
   age: { type: Number },
   gender: { type: String, enum: ["Male", "Female", "Non-Binary", "Other"], required: true },
   maritalStatus: { 
@@ -39,7 +39,7 @@ const participantSchema = new mongoose.Schema({
     enum: ["White", "Black/African American", "Asian", "Hispanic/Latino", "Native American", "Pacific Islander", "Mixed", "Other"] 
   },
   nationality: { type: String },
-  primaryLanguages: [{ type: String }],
+  language: { type: String },
 
   healthStatus: { type: String },
   chronicConditions: [{ type: String }],
