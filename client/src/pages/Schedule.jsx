@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardActions, CardContent, Dialog, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
+import { Box, Button, Card, CardActions, CardContent, Dialog, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import React from 'react'
 
 function Schedule() {
@@ -47,19 +47,26 @@ function Schedule() {
 
         <Box>
             <Button variant='contained' onClick={()=>setDialogOpen(true)}>Book a Session</Button>
-            <Dialog open={dialogOpen} onClose={()=>setDialogOpen}>
-                <Card>
-<CardContent>
+            <Dialog
+  open={dialogOpen}
+  onClose={() => setDialogOpen(false)}
+>
+  <DialogTitle id="alert-dialog-title">
+    Book a Session
+  </DialogTitle>
+  <DialogContent>
+    <DialogContentText id="alert-dialog-description">
+    Would you like to schedule an appointment at our clinic? Please confirm to proceed with the appointment booking.
+    </DialogContentText>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+    <Button autoFocus onClick={() => alert("Session booked!")}>
+      Confirm
+    </Button>
+  </DialogActions>
+</Dialog>
 
-                    <Typography variant='h4'>Do you want to book a session?</Typography>
-</CardContent>
-<CardActions>
-    <Button>Yes</Button>
-    <Button>No</Button>
-</CardActions>
-                </Card>
-            
-            </Dialog>
         </Box>
 
     </Box>
