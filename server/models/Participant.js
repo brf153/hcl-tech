@@ -4,6 +4,7 @@ const participantSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  role: { type: String, enum: ["Participant", "Admin"], required: true },
   dateOfBirth: { type: Date, required: true },
   age: { type: Number },
   gender: { type: String, enum: ["Male", "Female", "Non-Binary", "Other"], required: true },
