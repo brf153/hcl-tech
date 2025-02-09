@@ -1,16 +1,17 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
+import AuthForm from "./pages/AuthForm";
+import Schedule from "./pages/Schedule";
+import Report from "./pages/Report";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<AuthForm />} />
         <Route path="/" element={<Home />} />
-        <Route path="/schedule" element={<Home />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/" element={<Home />} />
+        <Route path="/schedule" element={<Schedule />} />
+        <Route path="/reports" element={<Report />} />
       </Routes>
     </Router>
   );
