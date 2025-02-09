@@ -4,6 +4,7 @@ const visitSchema = new mongoose.Schema({
   participant: { type: mongoose.Schema.Types.ObjectId, ref: "Participant" },
   date: Date,
   sessionDate: Date,
+  status: String,
   vitals: {
     heartRate: Number,
     bloodPressure: Number,
